@@ -1,0 +1,25 @@
+version: "2.0"
+services:
+
+  server:
+    build: ./image
+    container_name: wx-server
+    restart: always
+    volumes: 
+      - .:/root
+      # - ./nginx:/etc/nginx
+    # ports: 
+    #   - "80:8000"
+
+  web:
+    image: nginx:1.13
+    container_name: wx-web
+    depends_on: 
+      - server
+    links:
+      - server:server
+    ports: 
+      - "80:8000"
+    volumes: 
+      - ./nginx/wxgo.conf:/etc/nginx/conf.d/wxnginx.conf
+    
